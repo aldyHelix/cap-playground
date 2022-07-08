@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>OOP</title>
+        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"> -->
+        <style>
+        </style>
+    </head>
+    <body>
+    <script>
+        class Supermarket{
+            buah = [
+                ['Nanas', 20],
+                ['Semangka', 60],
+                ['Apel', 50],
+                ['Nangka', 30],
+                ['Stroberi', 70],
+            ];
+            
+            constructor(namaBarang, jumlahPemesanan){
+                this.namaBarang = namaBarang;
+                this.jumlahPemesanan = jumlahPemesanan;
+            }
+
+            cekStok(){
+                let dataBarang = [];
+                let stok = 0;
+                
+                for (let i = 0; i < this.buah.length; i++) {
+                    if(this.buah[i][0] === this.namaBarang){
+                        // console.log(this.buah[i][0]);
+                        dataBarang.push(this.buah[i]);
+                    }
+                }
+                
+                if(dataBarang.length){
+                    let namaBarangDitemukan = dataBarang[0][0];
+                    let stokBarangDitemukan = dataBarang[0][1];
+                    
+                    if(stokBarangDitemukan < this.jumlahPemesanan){
+                        stok = stokBarangDitemukan + (this.jumlahPemesanan * 2);
+                        console.log("Stok Habis!!!");
+                        console.log("Nama Barang: "+this.namaBarang);
+                        console.log("Perlu Stok Tambahan: "+stok+" pcs");
+                    }else{
+                        stok = stokBarangDitemukan - this.jumlahPemesanan;
+                        console.log("Nama Barang: "+this.namaBarang);
+                        console.log("Stok Awal: "+stokBarangDitemukan+" pcs");
+                        console.log("Jumlah Dibeli: "+this.jumlahPemesanan+" pcs");
+                        console.log("Stok Sisa: "+stok+" pcs");
+                        console.log("Selamat Berbelanja Kembali YGY");
+                    }
+                }else{
+                    console.log("Barang Yang Anda Cari Tidak Tersedia");
+                }
+            }
+        }
+    </script>
+    </body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DOM</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        <style>
+            .form-check{
+                margin-right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="display-4">Belajar DOM</h1>
+            <p class="lead">CAP Batch 2 - SAD - Dwi Waluyo Putranto</p>
+            <div class="row">
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="nama">Nama</label>
+                        <input type="text" class="form-control" id="nama" placeholder="Stephen Chou">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="email@google.com">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="alamat">Alamat</label>
+                        <textarea class="form-control" id="alamat" rows="3" placeholder="Jalan Kenanga Terusan no 32, Kec. Pasar Minggu, Kota Jakarta Selatan"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="hp">Nomor HP</label>
+                        <input type="number" class="form-control" id="hp" placeholder="+62 (11-13 digit)">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="input-group mb-3">
+                        <div class="input-group-text">
+                            <span class="form-check-label" id="text-warning">Kategori</span>
+                            <span id="text-warning"></span>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="form-check">
+                            <label class="form-check-label" for="fe">Front-End Developer</label>
+                            <input class="form-check-input" type="checkbox" value="Front-End Developer" id="fe">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" for="be">Back-End Developer</label>
+                            <input class="form-check-input" type="checkbox" value="Back-End Developer" id="be">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" for="fd">FullStack Developer</label>
+                            <input class="form-check-input" type="checkbox" value="FullStack Developer" id="fd">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" for="bd">Big Data</label>
+                            <input class="form-check-input" type="checkbox" value="Big Data" id="bd">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" for="bi">Bussiness Intelligence</label>
+                            <input class="form-check-input" type="checkbox" value="Bussiness Intelligence" id="bi">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="input-group mb-3">
+                        <button type="submit" class="btn btn-primary mb-3" id="submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Nama</th>
+                              <th scope="col">Email</th>
+                              <th scope="col">Alamat</th>
+                              <th scope="col">Nomor HP</th>
+                              <th scope="col">Kategori</th>
+                            </tr>
+                          </thead>
+                          <tbody id="tableContent">
+                          </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            let btnSubmit = document.getElementById('submit');
+            let nama = document.getElementById('nama');
+            let email = document.getElementById('email');
+            let alamat = document.getElementById('alamat');
+            let hp = document.getElementById('hp');
+            let kategori = document.querySelectorAll("input[type=checkbox]");
+            let tableContent = document.getElementById('tableContent');
+
+            //onclickSubmit
+            btnSubmit.addEventListener('click', validation);
+
+            //onchangeText
+            nama.addEventListener('keyup', function(){ nama.value === "" ? nama.style.border = "2px solid salmon" : nama.style.border = "1px solid #ced4da"; });
+            email.addEventListener('keyup', function(){ email.value === "" ? email.style.border = "2px solid salmon" : email.style.border = "1px solid #ced4da"; });
+            alamat.addEventListener('keyup', function(){ alamat.value === "" ? alamat.style.border = "2px solid salmon" : alamat.style.border = "1px solid #ced4da"; });
+            hp.addEventListener('keyup', function(){ hp.value === "" ? hp.style.border = "2px solid salmon" : hp.style.border = "1px solid #ced4da"; });
+            
+            function checkEmail(inputText){
+                if(inputText !== ""){
+                    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                    if(inputText.match(mailformat)){
+                        // console.log("Email valid");
+                        return true;
+                    }else{
+                        // console.log("Email tidak valid");
+                        email.style.border = "2px solid salmon";
+                        return false;
+                    }
+                }
+            }
+
+            function checkPhone(phone){
+                phone = String(phone).trim();
+                if(phone !== ""){
+                    if(phone.startsWith('62') && phone.length <= 13 && phone.length >=11) {
+                        return true;
+                    }else{
+                        hp.style.border = "2px solid salmon";
+                        return false; 
+                    }
+                }
+            }
+            
+            function validation(){
+                checkPhone(hp.value);
+                let i = 1;
+                let countKategori = 0;
+                let dataKategori = [];
+                if(nama.value === ""){
+                    nama.style.border = "2px solid salmon";
+                }
+                if(email.value === ""){
+                    email.style.border = "2px solid salmon";
+                }
+                if(alamat.value === ""){
+                    alamat.style.border = "2px solid salmon";
+                }
+                if(hp.value === ""){
+                    hp.style.border = "2px solid salmon";
+                }
+                
+                kategori.forEach((v) =>{
+                    if(v.checked){
+                        dataKategori.push(v.value);
+                        countKategori++;
+                    }
+                });
+                if(countKategori === 0){
+                    document.getElementById("text-warning").style.color = "red";
+                }else{
+                    document.getElementById("text-warning").style.color = "black";
+                }
+
+                if(nama.value !== "" && checkEmail(email.value) && alamat.value !== "" && checkPhone(hp.value) && countKategori !== 0){
+                    alert("Success");
+                    let tr = document.createElement('tr');
+                    let td = "";
+                    td += `<td>${i}</td>`;                    
+                    td += `<td>${nama.value}</td>`;                
+                    td += `<td>${email.value}</td>`;                
+                    td += `<td>${alamat.value}</td>`;                    
+                    td += `<td>${hp.value}</td>`;
+                    td += `<td>${dataKategori.join(", ")}</td>`;
+                    tr.innerHTML = td;
+                    tableContent.appendChild(tr);                    
+
+                    //kosongkan textbox
+                    nama.value = "";
+                    email.value = "";
+                    alamat.value = "";
+                    hp.value = "";
+                    
+                    //kosongkan checkbox
+                    for (let kat of kategori) {
+                        kat.checked = false;
+                    }
+                    i++;
+                }
+        }
+
+        function squareDigits(num){
+            let splitNum = num.toString().split("").map((numbs) => parseInt(numbs) ** 2);
+            return parseInt(splitNum.join(""));
+        }
+        // console.log(squareDigits(3212));
+        </script>
+    </body>
+</html>
