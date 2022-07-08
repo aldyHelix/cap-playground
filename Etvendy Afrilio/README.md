@@ -1,4 +1,4 @@
 Nama : Etvendy Afrilio
-Trank : SAD
-Celerates 2022
-Ini updatetan terbaru
+
+Celerates OKE 2022
+Ini updatetan v.2
